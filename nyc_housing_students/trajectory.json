@@ -1,0 +1,297 @@
+{
+  "name": "nyc_housing_students",
+  "schema_version": 2,
+  "execution": {
+    "step_order": "ascending; barrier between steps",
+    "within_step": "independent; any order or concurrent",
+    "artifact_dependencies": "none; every script is standalone",
+    "winner_selection": "none; replay all fixed candidates"
+  },
+  "evaluation": {
+    "metric": "average precision",
+    "maximize": true,
+    "data": "original full tables, then pandas row sampling after each read; settings.py controls fraction and seed",
+    "split": "2020 and 2021 training cohorts; 2022 validation",
+    "ranking_ties": "equal scores share rank"
+  },
+  "steps": [
+    {
+      "step": 1,
+      "name": "Violation history and building characteristics",
+      "after_steps": [],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_1_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "name": "Complaint history and recent violations",
+      "after_steps": [
+        1
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_2_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "name": "Building classes and neighborhood risk",
+      "after_steps": [
+        2
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_3_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "name": "Violation backlogs and municipal distress",
+      "after_steps": [
+        3
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_4_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "name": "Heating complaints and bedbug reports",
+      "after_steps": [
+        4
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_5_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "name": "Ownership portfolios and safety violations",
+      "after_steps": [
+        5
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_6_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "name": "Property sales and inspection frequency",
+      "after_steps": [
+        6
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_7_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "name": "Census tract risk and building alterations",
+      "after_steps": [
+        7
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_8_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "name": "Apartment diffusion and violation cures",
+      "after_steps": [
+        8
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_9_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "name": "Chronic violations and portfolio complaints",
+      "after_steps": [
+        9
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_10_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "name": "Neighborhood deviations and repair charges",
+      "after_steps": [
+        10
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_11_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "name": "Building morphology and violation categories",
+      "after_steps": [
+        11
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_12_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "name": "Open complaints and overdue violations",
+      "after_steps": [
+        12
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_13_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "name": "Emergency repairs and litigation history",
+      "after_steps": [
+        13
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_14_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "name": "Violation recurrence and eviction history",
+      "after_steps": [
+        14
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_15_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "name": "Cure duration and buildings per lot",
+      "after_steps": [
+        15
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_16_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "name": "Recent complaints and litigation penalties",
+      "after_steps": [
+        16
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_17_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "name": "Alternative historical aggregates",
+      "after_steps": [
+        17
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_18_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "name": "Building dimensions and ownership risk",
+      "after_steps": [
+        18
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_19_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "name": "Safety violations and feature interactions",
+      "after_steps": [
+        19
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_20_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    }
+  ]
+}
