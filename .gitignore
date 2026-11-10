@@ -15,3 +15,4 @@ wheels/
 **/working/
 **/catboost_info/
 nyc_housing_students/input
+nyc_taxi_students/input
