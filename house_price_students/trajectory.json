@@ -1,0 +1,203 @@
+{
+  "name": "house_price_students",
+  "schema_version": 2,
+  "execution": {
+    "step_order": "ascending; barrier between steps",
+    "within_step": "independent; any order or concurrent",
+    "artifact_dependencies": "none; every script is standalone",
+    "winner_selection": "none; replay all fixed candidates"
+  },
+  "evaluation": {
+    "metric": "RMSE on log10(price)",
+    "maximize": false,
+    "data": "full price_paid_records.csv read, then a seeded random sample of 2,000,000 rows; sales up to 2016-12-31",
+    "split": "out-of-time holdout: fit on sales before 2016, validate on 2016",
+    "ranking_ties": "equal scores share rank"
+  },
+  "steps": [
+    {
+      "step": 1,
+      "name": "Detrended LightGBM baseline: leaf count",
+      "after_steps": [],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_1_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_1_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_1_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "name": "Bug fix: trend model string keys",
+      "after_steps": [
+        1
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_2_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "name": "County macro trend and town encodings: encoding smoothing",
+      "after_steps": [
+        2
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_3_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_3_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_3_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "name": "Bug fix: trend model prediction",
+      "after_steps": [
+        3
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_4_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "name": "Historical relative price priors: training window",
+      "after_steps": [
+        4
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_5_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_5_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_5_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "name": "LightGBM + CatBoost with momentum features: recency weighting",
+      "after_steps": [
+        5
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_6_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_6_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_6_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "name": "LightGBM + XGBoost blend",
+      "after_steps": [
+        6
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_7_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "name": "Disambiguated location keys",
+      "after_steps": [
+        7
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_8_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "name": "District trend slopes",
+      "after_steps": [
+        8
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_9_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "name": "Relative hedonic premium features",
+      "after_steps": [
+        9
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_10_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "name": "Stationary features and town trend intercepts",
+      "after_steps": [
+        10
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_11_1.py",
+          "artifact_dependencies": []
+        }
+      ]
+    }
+  ]
+}
