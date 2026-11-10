@@ -39,7 +39,7 @@
     },
     {
       "step": 2,
-      "name": "Domain feature additions",
+      "name": "Domain feature additions", 
       "after_steps": [
         1
       ],

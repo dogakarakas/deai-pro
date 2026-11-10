@@ -57,7 +57,7 @@ def main():
         manifest[f'{column}_Missing'] = manifest[column].isna().astype(int)
     known_spend = manifest[['RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck']].sum(axis=1,
         min_count=1)
-    mask = manifest['CryoSleep'].isna() & (known_spend > 0)
+    mask = manifest['CryoSleep'].isna() & (known_spend > 0)         #handling null values
     manifest.loc[mask, 'CryoSleep'] = False
     for column in ['RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck']:
         mask = (manifest['CryoSleep'] == True) | (manifest['Age'] < 13)
