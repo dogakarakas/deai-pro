@@ -10,6 +10,7 @@ Run a whole trajectory from the repository root:
 python run_trajectory.py spaceship_titanic_students
 python run_trajectory.py house_price_students
 python run_trajectory.py nyc_housing_students
+python run_trajectory.py nyc_taxi_students
 ```
 
 The runner runs each pipeline inside its competition folder, so the pipelines can find `input/`.
@@ -71,3 +72,25 @@ NYC_SAMPLE_FRACTION=0.2 uv run python run_trajectory.py nyc_housing_students
 ```
 
 See the trajectory's README for external data paths and other fractions.
+
+## NYC taxi fares
+
+The [taxi trajectory](nyc_taxi_students/README.md) contains 20 pipelines across
+seven steps, with independent variants within each step. It uses scikit-learn
+Random Forest, Extra Trees, and voting regressors, with skrub preprocessing
+in ten pipelines. Each pipeline reports mean RMSE from seeded five-fold
+cross-validation.
+
+Download the original files from the
+[New York City Taxi Fare Prediction competition](https://www.kaggle.com/competitions/new-york-city-taxi-fare-prediction/data)
+and extract them into `nyc_taxi_students/input/`. By default, each pipeline
+reads the first 3,000,000 training rows and takes a seeded 20% pandas sample.
+[settings.py](nyc_taxi_students/settings.py) controls the read limit and sampling
+fraction.
+
+```bash
+uv sync
+uv run python run_trajectory.py nyc_taxi_students
+```
+
+See the trajectory's README for setup instructions and workload controls.

@@ -1,0 +1,167 @@
+{
+  "name": "nyc_taxi_students",
+  "schema_version": 2,
+  "execution": {
+    "step_order": "ascending; barrier between steps",
+    "within_step": "independent; any order or concurrent",
+    "artifact_dependencies": "none; every script is standalone",
+    "winner_selection": "none; replay all fixed candidates"
+  },
+  "evaluation": {
+    "metric": "mean five-fold RMSE on fare_amount (USD)",
+    "maximize": false,
+    "data": "original train.csv or train.csv.gz; bounded prefix read followed by seeded pandas row sampling, controlled in settings.py",
+    "split": "five-fold KFold within each feature branch; shuffle=True, random_state=42; fresh model and, where used, skrub transformers per fold",
+    "ranking_ties": "equal scores share rank"
+  },
+  "steps": [
+    {
+      "step": 1,
+      "name": "Calendar and distance features",
+      "after_steps": [],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_1_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_1_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_1_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "name": "Direction, distance ratios, and cyclic time",
+      "after_steps": [
+        1
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_2_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_2_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_2_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "name": "Spatial bins and distance per passenger",
+      "after_steps": [
+        2
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_3_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_3_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_3_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "name": "Spatial bins with cyclic time and distance ratios",
+      "after_steps": [
+        3
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_4_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_4_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_4_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "name": "Cyclic weekdays and passenger-distance interactions",
+      "after_steps": [
+        4
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_5_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_5_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_5_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "name": "Trip midpoints, rush hours, and passenger density",
+      "after_steps": [
+        5
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_6_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_6_2.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_6_3.py",
+          "artifact_dependencies": []
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "name": "Coordinate interactions and log-target ensembles",
+      "after_steps": [
+        6
+      ],
+      "within_step_order": "any",
+      "pipelines": [
+        {
+          "file": "pipeline_7_1.py",
+          "artifact_dependencies": []
+        },
+        {
+          "file": "pipeline_7_2.py",
+          "artifact_dependencies": []
+        }
+      ]
+    }
+  ]
+}
