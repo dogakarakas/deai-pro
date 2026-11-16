@@ -57,7 +57,7 @@ def main():
     output_dir = folder / "results"
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "summary.json").write_text(json.dumps(results, indent=2) + "\n")
-
+    (output_dir / "summary.wall").write_text(f"{real_time:.3f}")
 
 if __name__ == "__main__":
     main()

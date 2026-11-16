@@ -20,6 +20,10 @@ def resolve(ref):
 def load(ref):
     return {r["pipeline_id"]: r for r in json.loads(resolve(ref).read_text())}
 
+def load_wall(ref):
+    wall_file = resolve(ref).with_suffix(".wall")
+    return float(wall_file.read_text()) if wall_file.exists() else None
+
 #Snapshot the current summary
 def cmd_save(args):
     if not SUMMARY.exists():
@@ -29,6 +33,11 @@ def cmd_save(args):
     if dest.exists() and not args.force:
         sys.exit(f"{dest} already exists. Use --force to overwrite")
     shutil.copy(SUMMARY, dest)
+    
+    wall_file = SUMMARY.with_suffix(".wall")
+    if wall_file.exists():
+        shutil.copy(wall_file, dest.with_suffix(".wall"))
+    
     print(f"Saved {SUMMARY} -> {dest}")
 
 #Duration of a single run of all pipelines    
@@ -57,7 +66,7 @@ def cmd_compare(args):
     for pid in ids:
         run_prev, run_curr = prev[pid], curr[pid]
         
-        acc_diff = run_prev["cv_accuracy"] - run_curr["cv_accuracy"]
+        acc_diff = run_prev["score"] - run_curr["score"]
         flag = ""
         
         if abs(acc_diff) > args.tol:
@@ -68,13 +77,17 @@ def cmd_compare(args):
         total_curr += run_curr["seconds"]
         total_prev += run_prev["seconds"]
         
-        print(f"{pid:14s} {run_prev['cv_accuracy']:11.6f} {run_curr['cv_accuracy']:11.6f} {acc_diff:+10.6f}"
+        print(f"{pid:14s} {run_prev['score']:11.6f} {run_curr['score']:11.6f} {acc_diff:+10.6f}"
               f" {run_prev['seconds']:10.2f} {run_curr['seconds']:10.2f} {speed_up:7.2f}x{flag}")
         
     print("--" * 40)
         
-    print(f"{'TOTAL':14s} {'':11s} {'':11s} {'':10s} {total_curr:10.2f} {total_prev:10.2f} {total_prev / total_curr:7.2f}x")
-        
+    print(f"{'TOTAL':14s} {'':11s} {'':11s} {'':10s} {total_prev:10.2f} {total_curr:10.2f} {total_prev / total_curr:7.2f}x")
+    wall_prev, wall_curr = load_wall(args.previous), load_wall(args.current)
+    if wall_prev and wall_curr:
+        print(f"{'WALL-CLOCK':14s} {'':11s} {'':11s} {'':10s} {wall_prev:10.2f} {wall_curr:10.2f} {wall_prev / wall_curr:7.2f}x")
+    else:
+        print("No wall-clock time stored for one of the runs.")
     rank_moves = [(p, prev[p]["rank"], curr[p]["rank"]) for p in ids if prev[p]["rank"] != curr[p]["rank"]]
     
     if rank_moves:
